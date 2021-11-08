@@ -8,22 +8,33 @@
 #include "dfs.h"
 
 
-void DFT (node * root)
-{
-	// Implement DFS
-	// Hint: You can use print_node, print_tree and/or print_stack.
+void DFT (node * root){
+
+  //Initializing stack to push the root of the tree onto
+  stack *list = NULL;
+  push(&list, root);
+
+  /*
+  Nodes from the tree will be popped, and pushed onto the stack
+  until the tree is traversed.
+  */
+  while(!isEmpty(list))
+    stack *popped = pop(&list);
+    printf("%d\n", popped->node->num);
+
+    if(popped->node->rchild != NULL){
+      push(&list, popped->node->rchild);
+    }
+
+    if(popped->node->rchild != NULL){
+      push(&list, popped->node->lchild);
+    }
 }
 
 node *make_node (int num, node * left, node * right)
 {
 	return 0;
 }
-
-void free_node (node * p)
-{
-	
-}
-
 
 void print_node (node * p)
 {
@@ -56,14 +67,31 @@ void print_tree (node * p, int depth)
     print_tree (p->rchild, depth + 1);
 }
 
+
 stack *push (stack * topp, node * node)
 {
+  stack *new_element = malloc(sizeof(stack));
+  
+  new_element -> node = node;
+  new_element -> next = NULL;
+
+  stack *temp = *topp;
+
+  stack *topp = new_element;
+
+  while (temp->next != NULL)
+  {
+    temp = temp->next;
+  }
+  
+  temp -> next = new_element;
+  
 	return 0;
 }
 
 bool isEmpty (stack * topp)
 {
-  return false;
+  return(topp == NULL);
 }
 
 node *top (stack * topp)
@@ -76,8 +104,30 @@ node *top (stack * topp)
 
 stack *pop (stack * topp)
 {
-	return 0;
+  stack *top = *topp;
+  stack *temp = top;
+  if (temp -> next == NULL)
+  {
+    *topp = NULL;
+    return (*temp);
+  }
+  else
+  {
+   stack *prev = top;
+    while (temp->next != NULL)
+    {
+      prev = temp;
+      temp = temp->next;
+    }
+
+    prev->next = NULL;
+    return temp;
+  }
+
+  return 0;
 }
+	
+
 
 void print_stack (stack * topp)
 {
