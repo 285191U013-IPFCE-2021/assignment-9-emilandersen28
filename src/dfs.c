@@ -8,8 +8,8 @@
 #include "dfs.h"
 
 
-void DFT (node * root){
-
+void DFT (node *root)
+{
   //Initializing stack to push the root of the tree onto
   stack *list = NULL;
   push(&list, root);
@@ -19,21 +19,30 @@ void DFT (node * root){
   until the tree is traversed.
   */
   while(!isEmpty(list))
+  {
     stack *popped = pop(&list);
     printf("%d\n", popped->node->num);
 
-    if(popped->node->rchild != NULL){
+    if(popped->node->rchild != NULL)
+    {
       push(&list, popped->node->rchild);
     }
 
-    if(popped->node->rchild != NULL){
+    if(popped->node->lchild != NULL)
+    {
       push(&list, popped->node->lchild);
     }
+  }
 }
 
 node *make_node (int num, node * left, node * right)
 {
-	return 0;
+	node *new = malloc(sizeof(node));
+  new->num = num;
+  new->visited = false;
+  new->lchild = left;
+  new->rchild = right;
+  return new;
 }
 
 void print_node (node * p)
@@ -64,29 +73,32 @@ void print_tree (node * p, int depth)
     }
 
   if (p->rchild)
+  {
     print_tree (p->rchild, depth + 1);
+  }
 }
 
 
-stack *push (stack * topp, node * node)
+void push(stack **topp, node * node)
 {
   stack *new_element = malloc(sizeof(stack));
   
   new_element -> node = node;
   new_element -> next = NULL;
 
-  stack *temp = *topp;
+  stack *top = *topp;
 
-  stack *topp = new_element;
-
-  while (temp->next != NULL)
+  if (isEmpty(top))
   {
-    temp = temp->next;
+    *topp = new_element;
   }
-  
-  temp -> next = new_element;
-  
-	return 0;
+  else
+  {
+    stack *temp = top;
+    while(temp->next != NULL)
+      temp = temp->next;
+    temp->next = new_element;
+  }
 }
 
 bool isEmpty (stack * topp)
@@ -102,14 +114,14 @@ node *top (stack * topp)
 // Utility function to pop topp  
 // element from the stack 
 
-stack *pop (stack * topp)
+stack *pop (stack **topp)
 {
   stack *top = *topp;
   stack *temp = top;
   if (temp -> next == NULL)
   {
     *topp = NULL;
-    return (*temp);
+    return temp;
   }
   else
   {
@@ -123,8 +135,6 @@ stack *pop (stack * topp)
     prev->next = NULL;
     return temp;
   }
-
-  return 0;
 }
 	
 
@@ -143,6 +153,4 @@ void print_stack (stack * topp)
     }
 
   printf ("====\n");
-
-  return;
 }

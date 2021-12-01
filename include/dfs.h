@@ -11,7 +11,7 @@ typedef struct node
 
 node *make_node (int num, node * left, node * right);
 
-void free_node (node * p);
+//void free_node (node * p);
 
 void print_node (node * p);
 
@@ -26,12 +26,12 @@ typedef struct stack
 } stack;
 
 
-stack *push (stack * topp, node * node);
+void push (stack **topp, node * node);
 
 bool isEmpty (stack * topp);
 
 node *top (stack * topp);
 
-stack *pop (stack * topp);
+stack *pop (stack **topp);
 
 void print_stack (stack * topp);
